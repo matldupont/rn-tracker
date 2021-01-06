@@ -1,10 +1,14 @@
 import * as React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
+import { Text } from 'react-native-elements'
+import { Spacer } from '../components/spacer'
 
 const TrackDetailScreen = () => {
   return (
     <View>
-      <Text>TrackDetail Screen</Text>
+      <Spacer >
+        <Text h1>Track Details</Text>
+      </Spacer>
     </View>
   )
 }
