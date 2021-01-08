@@ -21,7 +21,7 @@ const Map = ({ locations, currentLocation }) => {
         strokeColor="rgba(158, 158, 255, 1.0)"
         fillColor="rgba(158, 158, 255, 0.3)"
       />
-      {/* <Polyline strokeColor="black" strokeWidth={2} coordinates={translatedLocations} /> */}
+      <Polyline strokeColor="black" strokeWidth={2} coordinates={locations.map(loc => loc.coords)} />
     </MapView>
   )
 }

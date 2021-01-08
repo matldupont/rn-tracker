@@ -9,15 +9,13 @@ import { useLocation } from '../hooks/use-location'
 import { TrackForm } from '../components/track-form'
 
 const TrackCreateScreen = () => {
-  // console.log(useLocation())
   const isFocused = useIsFocused()
-  const { state: { locations, currentLocation }, error, startWatching, stopWatching } = useLocation()
-  // console.log(currentLocation)
+  const { state: { locations, currentLocation, isRecording }, error, startWatching, stopWatching } = useLocation()
 
   React.useEffect(() => {
     if(isFocused) {
       startWatching()
-    } else {
+    } else if (!isRecording) {
       stopWatching()
     }
   },[isFocused])

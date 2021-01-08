@@ -10,7 +10,7 @@ const useLocation = () => {
   }
 
   const {state: { isRecording, isWatching } } = context
-  const [subscriber, setSubscriber] = React.useState(null)
+ 
   const [error, setError] = React.useState(null)
   const { addLocation, state: { locations, currentLocation }} = context
 
@@ -18,28 +18,35 @@ const useLocation = () => {
     console.log('LOCATIONS', locations.length)
   },[locations])
 
-  const startWatching = React.useCallback(async () => {
-    try { 
-      const { granted } = await requestPermissionsAsync()
-      if (!granted) {
-        throw new Error('Location permission not granted')
-      }
-      const sub = await watchPositionAsync({
-        accuracy: Accuracy.BestForNavigation,
-        timeInterval: 1000,
-        distanceInterval: 10
-      }, location => {
-        addLocation(location, isRecording)
-      })
-      setSubscriber(sub)
-    } catch (e) {
-      console.error('ERROR', e)
-      setError(e)
-    }
-  },[isRecording])
+
 
   
   React.useEffect(() => {
+    let subscriber
+    const startWatching = async () => {
+     
+      try { 
+        const { granted } = await requestPermissionsAsync()
+        if (!granted) {
+          throw new Error('Location permission not granted')
+        }
+  
+        if (subscriber) {
+          subscriber.remove()
+        }
+        subscriber = await watchPositionAsync({
+          accuracy: Accuracy.BestForNavigation,
+          timeInterval: 1000,
+          distanceInterval: 10
+        }, location => {
+          addLocation(location, isRecording)
+        })
+      } catch (e) {
+        console.error('ERROR', e)
+        setError(e)
+      }
+    }
+
     if (isWatching) {
       console.log('start watching')
       startWatching()
@@ -47,10 +54,16 @@ const useLocation = () => {
       if (subscriber) {
         console.log('stop watching')
         subscriber.remove()
-        setSubscriber(null)
+        subscriber = null
       }
     }
-  },[isWatching, startWatching])
+
+    return () => {
+      if (subscriber) {
+        subscriber.remove()
+      }
+    }
+  },[isWatching, isRecording])
 
   return {...context, error}
 }

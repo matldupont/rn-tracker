@@ -14,7 +14,9 @@ import { TrackListScreen } from './src/screens/tracklist-screen'
 import { ResolveAuthScreen } from './src/screens/resolve-auth-screen'
 import { AuthProvider } from './src/context/auth-context'
 import { LocationProvider } from './src/context/location-context'
+import { TrackProvider } from './src/context/track-context'
 import { navigationRef } from './src/root-navigation'
+
 const Stack = createStackNavigator()
 const LoginStack = createStackNavigator()
 const TracksStack = createStackNavigator()
@@ -78,20 +80,22 @@ const Main = () => (
 export default function App() {
   return (
     <SafeAreaProvider>
-      <LocationProvider>
-        <AuthProvider>
-          <StatusBar barStyle="dark-content" />
-          <NavigationContainer ref={navigationRef} >
-            <Stack.Navigator
-              initialRouteName="Login"
-              headerMode="none"
-            >
-              <Stack.Screen name="Main" component={Main} />
-              <Stack.Screen name="Login" component={Login} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </AuthProvider>
-      </LocationProvider>
+      <TrackProvider>
+        <LocationProvider>
+          <AuthProvider>
+            <StatusBar barStyle="dark-content" />
+            <NavigationContainer ref={navigationRef} >
+              <Stack.Navigator
+                initialRouteName="Login"
+                headerMode="none"
+              >
+                <Stack.Screen name="Main" component={Main} />
+                <Stack.Screen name="Login" component={Login} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </AuthProvider>
+        </LocationProvider>
+      </TrackProvider>
     </SafeAreaProvider>
   );
 }
