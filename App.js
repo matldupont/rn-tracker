@@ -16,6 +16,7 @@ import { AuthProvider } from './src/context/auth-context'
 import { LocationProvider } from './src/context/location-context'
 import { TrackProvider } from './src/context/track-context'
 import { navigationRef } from './src/root-navigation'
+import { FontAwesome } from '@expo/vector-icons'
 
 const Stack = createStackNavigator()
 const LoginStack = createStackNavigator()
@@ -55,7 +56,10 @@ const Tracks = () => (
     <TracksStack.Screen 
       name="TrackList"
       component={TrackListScreen}
-      options={{ headerShown: false}}
+      options={{
+        headerTitle: 'Tracks',
+        headerLeft: null
+      }}
     />
   </TracksStack.Navigator>
 )
@@ -64,15 +68,28 @@ const Main = () => (
   <MainTab.Navigator
     initialRouteName="Tracks"
   >
-    <MainTab.Screen name="Tracks" component={Tracks} />
+    <MainTab.Screen 
+      name="Tracks" 
+      component={Tracks} 
+      options={{ 
+        title: 'Tracks',
+        tabBarIcon: () => <FontAwesome name="list" size={20} />,
+      }}
+    />
     <MainTab.Screen 
       name="TrackCreate"
       component={TrackCreateScreen}
-      options={{ title: 'Create'}}
+      options={{ 
+        title: 'Add Track',
+        tabBarIcon: () => <FontAwesome name="plus" size={20} />,
+      }}
     />
     <MainTab.Screen 
       name="Account"
       component={AccountScreen}
+      options={{ 
+         tabBarIcon: () => <FontAwesome name="gear" size={20} />,
+      }}
     />
   </MainTab.Navigator>
 )

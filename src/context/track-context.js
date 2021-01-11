@@ -4,12 +4,22 @@ import { createDataContext } from './create-data-context';
 
 const trackReducer = (state, { type, payload }) => {
   switch(type) {
+    case 'fetch_tracks':
+      return payload
     default:
       return state
   }
 }
 
-const fetchTracks = dispatch => () => {}
+const fetchTracks = dispatch => async () => {
+  try {
+    const { data } = await trackerAPI.get('/tracks')
+    dispatch({ type: 'fetch_tracks', payload: data })
+  } catch(err) {
+    console.error('Error fetching track', err)
+  }
+}
+
 const createTrack = dispatch => async ({ name, locations }) => {
   try {
     const { data } = await trackerAPI.post('/tracks', {name, locations})

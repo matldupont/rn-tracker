@@ -13,14 +13,7 @@ const useLocation = () => {
  
   const [error, setError] = React.useState(null)
   const { addLocation, state: { locations, currentLocation }} = context
-
-  React.useEffect(() => {
-    console.log('LOCATIONS', locations.length)
-  },[locations])
-
-
-
-  
+ 
   React.useEffect(() => {
     let subscriber
     const startWatching = async () => {
@@ -48,11 +41,9 @@ const useLocation = () => {
     }
 
     if (isWatching) {
-      console.log('start watching')
       startWatching()
     } else {
       if (subscriber) {
-        console.log('stop watching')
         subscriber.remove()
         subscriber = null
       }
